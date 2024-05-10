@@ -1,4 +1,6 @@
-# Photoshop-Export-Layers-to-Files-Fast
+# Photoshop-Export-Layers-to-Files-Fast-TIFF-Fix
+
+The TIFF export was not working in previous versions. I fixed it.
 
 This script allows you to export layers in your Photoshop document as individual files at a speed much faster than the built-in script from Adobe.
 
