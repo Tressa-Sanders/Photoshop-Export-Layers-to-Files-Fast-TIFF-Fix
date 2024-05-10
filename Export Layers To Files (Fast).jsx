@@ -194,18 +194,18 @@ var Formats = {
     },
     "TIFF": {
         index: 3,
-        fileType: "TIF",
-        fileExtension: ".tif",
+        fileType: "TIFF",
+        fileExtension: ".tiff",
         formatArgs: function() {
             var options = new TiffSaveOptions();
             var ratio = 12 / 100;
-            options.jpegQuality = Math.round(prefs.tifQuality * ratio);
+            options.jpegQuality = Math.round(prefs.tiffQuality * ratio);
             var encoding = [TIFFEncoding.NONE, TIFFEncoding.TIFFLZW, TIFFEncoding.TIFFZIP, TIFFEncoding.JPEG];
-            options.imageCompression = encoding[prefs.tifEncoding];
-            options.alphaChannels = prefs.tifAlphaChannel; 
+            options.imageCompression = encoding[prefs.tiffEncoding];
+            options.alphaChannels = prefs.tiffAlphaChannel; 
             options.layers = false; 
-            options.embedColorProfile = prefs.tifIcc;
-            options.transparency = prefs.tifTransparency; 
+            options.embedColorProfile = prefs.tiffIcc;
+            options.transparency = prefs.tiffTransparency; 
             return options;
         }
     },
@@ -361,11 +361,11 @@ var DEFAULT_SETTINGS = {
     jpgIcc: app.stringIDToTypeID('jpgIcc'),
     jpgOptimized: app.stringIDToTypeID('jpgOptimized'),
     jpgProgressive: app.stringIDToTypeID('jpgProgressive'),
-    tifQuality: app.stringIDToTypeID('tifQuality'),
-    tifEncoding: app.stringIDToTypeID('tifEncoding'),
-    tifAlphaChannel: app.stringIDToTypeID("tifAlphaChannel"),
-    tifIcc: app.stringIDToTypeID('tifIcc'),
-    tifTransparency: app.stringIDToTypeID('tifTransparency'),
+    tiffQuality: app.stringIDToTypeID('tiffQuality'),
+    tiffEncoding: app.stringIDToTypeID('tiffEncoding'),
+    tiffAlphaChannel: app.stringIDToTypeID("tiffAlphaChannel"),
+    tiffIcc: app.stringIDToTypeID('tiffIcc'),
+    tiffTransparency: app.stringIDToTypeID('tiffTransparency'),
     pdfStandard: app.stringIDToTypeID('pdfStandard'),
     pdfCompatibility: app.stringIDToTypeID('pdfCompatibility'),
     pdfQuality: app.stringIDToTypeID('pdfQuality'),
@@ -1456,24 +1456,24 @@ function showDialog() {
     fields.cbJpgOptimized.value = prefs.jpgOptimized;
     fields.cbJpgProgressive.value = prefs.jpgProgressive;
 
-    // TIF
+    // TIFF
     // ===
-    fields.ddTifEncoding.selection = prefs.tifEncoding;
-    fields.ddTifEncoding.onChange = function() {
-         fields.grpTifQuality.enabled = this.selection.index === 3;
+    fields.ddTiffEncoding.selection = prefs.tiffEncoding;
+    fields.ddTiffEncoding.onChange = function() {
+         fields.grpTiffQuality.enabled = this.selection.index === 3;
     }
 
-    fields.grpTifQuality.enabled = prefs.tifEncoding === 3;
-    fields.sldrTifQuality.value = prefs.tifQuality;
-    fields.lblTifQualityValue.text = prefs.tifQuality;
-    fields.sldrTifQuality.onChanging = function() {
+    fields.grpTiffQuality.enabled = prefs.tiffEncoding === 3;
+    fields.sldrTiffQuality.value = prefs.tiffQuality;
+    fields.lblTiffQualityValue.text = prefs.tiffQuality;
+    fields.sldrTiffQuality.onChanging = function() {
         this.value = Math.floor(this.value);
-        fields.lblTifQualityValue.text = this.value;
+        fields.lblTiffQualityValue.text = this.value;
     }
 
-    fields.cbTifWithAlpha.value = prefs.tifAlphaChannel;
-    fields.cbTifIcc.value = prefs.tifIcc;
-    fields.cbTifTransparency.value = prefs.tifTransparency;
+    fields.cbTiffWithAlpha.value = prefs.tiffAlphaChannel;
+    fields.cbTiffIcc.value = prefs.tiffIcc;
+    fields.cbTiffTransparency.value = prefs.tiffTransparency;
   
     // PDF
     // ===
@@ -1573,11 +1573,11 @@ function saveSettings(dialog) {
     desc.putBoolean(DEFAULT_SETTINGS.jpgOptimized, fields.cbJpgOptimized.value);
     desc.putBoolean(DEFAULT_SETTINGS.jpgProgressive, fields.cbJpgProgressive.value);
 
-    desc.putInteger(DEFAULT_SETTINGS.tifQuality, fields.sldrTifQuality.value);
-    desc.putInteger(DEFAULT_SETTINGS.tifEncoding, fields.ddTifEncoding.selection.index);
-    desc.putBoolean(DEFAULT_SETTINGS.tifAlphaChannel, fields.cbTifWithAlpha.value);
-    desc.putBoolean(DEFAULT_SETTINGS.tifIcc, fields.cbTifIcc.value);
-    desc.putBoolean(DEFAULT_SETTINGS.tifTransparency, fields.cbTifTransparency.value);
+    desc.putInteger(DEFAULT_SETTINGS.tiffQuality, fields.sldrTiffQuality.value);
+    desc.putInteger(DEFAULT_SETTINGS.tiffEncoding, fields.ddTiffEncoding.selection.index);
+    desc.putBoolean(DEFAULT_SETTINGS.tiffAlphaChannel, fields.cbTiffWithAlpha.value);
+    desc.putBoolean(DEFAULT_SETTINGS.tiffIcc, fields.cbTiffIcc.value);
+    desc.putBoolean(DEFAULT_SETTINGS.tiffTransparency, fields.cbTiffTransparency.value);
 
     desc.putInteger(DEFAULT_SETTINGS.pdfStandard, fields.ddPdfStandard.selection.index);
     desc.putInteger(DEFAULT_SETTINGS.pdfCompatibility, fields.ddPdfCompatibility.selection.index);
@@ -1701,11 +1701,11 @@ function getDefaultSettings() {
             tgaAlphaChannel: false,
             tgaDepth: 0,
             tgaRleCompression: false,
-            tifAlphaChannel: false,
-            tifEncoding: 1,
-            tifIcc: false,
-            tifTransparency: false,
-            tifQuality: 100,
+            tiffAlphaChannel: false,
+            tiffEncoding: 1,
+            tiffIcc: false,
+            tiffTransparency: false,
+            tiffQuality: 100,
             topGroupAsFolder: false,
             topGroupAsLayer: false,
             trim: false,
@@ -1784,11 +1784,11 @@ function getSettings(formatOpts) {
             tgaAlphaChannel: desc.getBoolean(DEFAULT_SETTINGS.tgaAlphaChannel),
             tgaDepth: desc.getInteger(DEFAULT_SETTINGS.tgaDepth),
             tgaRleCompression: desc.getBoolean(DEFAULT_SETTINGS.tgaRleCompression),
-            tifAlphaChannel: desc.getBoolean(DEFAULT_SETTINGS.tifAlphaChannel),
-            tifEncoding: desc.getInteger(DEFAULT_SETTINGS.tifEncoding),
-            tifIcc: desc.getBoolean(DEFAULT_SETTINGS.tifIcc),
-            tifTransparency: desc.getBoolean(DEFAULT_SETTINGS.tifTransparency),
-            tifQuality: desc.getInteger(DEFAULT_SETTINGS.tifQuality),
+            tiffAlphaChannel: desc.getBoolean(DEFAULT_SETTINGS.tiffAlphaChannel),
+            tiffEncoding: desc.getInteger(DEFAULT_SETTINGS.tiffEncoding),
+            tiffIcc: desc.getBoolean(DEFAULT_SETTINGS.tiffIcc),
+            tiffTransparency: desc.getBoolean(DEFAULT_SETTINGS.tiffTransparency),
+            tiffQuality: desc.getInteger(DEFAULT_SETTINGS.tiffQuality),
             topGroupAsFolder: desc.getBoolean(DEFAULT_SETTINGS.topGroupAsFolder),
             topGroupAsLayer: desc.getBoolean(DEFAULT_SETTINGS.topGroupAsLayer),
             trim: desc.getBoolean(DEFAULT_SETTINGS.trim),
@@ -2530,14 +2530,14 @@ function getDialogFields(dialog) {
         cbJpgIcc: dialog.findElement("cbJpgIcc"),
         cbJpgOptimized: dialog.findElement("cbJpgOptimized"),
         cbJpgProgressive: dialog.findElement("cbJpgProgressive"),
-        // TIF
-        grpTifQuality: dialog.findElement("grpTifQuality"),
-        sldrTifQuality: dialog.findElement("sldrTifQuality"),
-        lblTifQualityValue: dialog.findElement("lblTifQualityValue"),
-        ddTifEncoding: dialog.findElement("ddTifEncoding"),
-        cbTifWithAlpha: dialog.findElement("cbTifWithAlpha"),
-        cbTifIcc: dialog.findElement("cbTifIcc"),
-        cbTifTransparency: dialog.findElement("cbTifTransparency"),
+        // TIFF
+        grpTiffQuality: dialog.findElement("grpTiffQuality"),
+        sldrTiffQuality: dialog.findElement("sldrTiffQuality"),
+        lblTiffQualityValue: dialog.findElement("lblTiffQualityValue"),
+        ddTiffEncoding: dialog.findElement("ddTiffEncoding"),
+        cbTiffWithAlpha: dialog.findElement("cbTiffWithAlpha"),
+        cbTiffIcc: dialog.findElement("cbTiffIcc"),
+        cbTiffTransparency: dialog.findElement("cbTiffTransparency"),
         // PDF
         ddPdfStandard: dialog.findElement("ddPdfStandard"),
         ddPdfCompatibility: dialog.findElement("ddPdfCompatibility"),
@@ -3171,60 +3171,60 @@ function makeMainDialog() {
     var cbJpgProgressive = tabJpg.add("checkbox", undefined, undefined, {name: "cbJpgProgressive"}); 
     cbJpgProgressive.text = "Progressive"; 
 
-    // TABTIF
+    // TABTIFF
     // ======
-    var tabTif = tabpnlExportOptions.add("tab", undefined, undefined, {name: "tabTif"}); 
-    tabTif.text = "TIFF"; 
-    tabTif.orientation = "column"; 
-    tabTif.alignChildren = ["left","top"]; 
-    tabTif.spacing = 5; 
-    tabTif.margins = 10; 
+    var tabTiff = tabpnlExportOptions.add("tab", undefined, undefined, {name: "tabTiff"}); 
+    tabTiff.text = "TIFF"; 
+    tabTiff.orientation = "column"; 
+    tabTiff.alignChildren = ["left","top"]; 
+    tabTiff.spacing = 5; 
+    tabTiff.margins = 10; 
 
-    // GRPTIFENCODING
+    // GRPTIFFENCODING
     // ==============
-    var grpTifEncoding = tabTif.add("group", undefined, {name: "grpTifEncoding"}); 
-    grpTifEncoding.orientation = "row"; 
-    grpTifEncoding.alignChildren = ["left","center"]; 
-    grpTifEncoding.spacing = 10; 
-    grpTifEncoding.margins = 0; 
+    var grpTiffEncoding = tabTiff.add("group", undefined, {name: "grpTiffEncoding"}); 
+    grpTiffEncoding.orientation = "row"; 
+    grpTiffEncoding.alignChildren = ["left","center"]; 
+    grpTiffEncoding.spacing = 10; 
+    grpTiffEncoding.margins = 0; 
 
-    var lblTifEncoding = grpTifEncoding.add("statictext", undefined, undefined, {name: "lblTifEncoding"}); 
-    lblTifEncoding.text = "Image Compression"; 
+    var lblTiffEncoding = grpTiffEncoding.add("statictext", undefined, undefined, {name: "lblTiffEncoding"}); 
+    lblTiffEncoding.text = "Image Compression"; 
 
-    var ddTifEncoding_array = ["None","LZW","ZIP","JPG"]; 
-    var ddTifEncoding = grpTifEncoding.add("dropdownlist", undefined, undefined, {name: "ddTifEncoding", items: ddTifEncoding_array}); 
-    ddTifEncoding.selection = 0; 
+    var ddTiffEncoding_array = ["None","LZW","ZIP","JPG"]; 
+    var ddTiffEncoding = grpTiffEncoding.add("dropdownlist", undefined, undefined, {name: "ddTiffEncoding", items: ddTiffEncoding_array}); 
+    ddTiffEncoding.selection = 0; 
 
-    // GRPTIFQUALITY
+    // GRPTIFFQUALITY
     // =============
-    var grpTifQuality = grpTifEncoding.add("group", undefined, {name: "grpTifQuality"}); 
-    grpTifQuality.orientation = "row"; 
-    grpTifQuality.alignChildren = ["left","center"]; 
-    grpTifQuality.spacing = 10; 
-    grpTifQuality.margins = 0; 
+    var grpTiffQuality = grpTiffEncoding.add("group", undefined, {name: "grpTiffQuality"}); 
+    grpTiffQuality.orientation = "row"; 
+    grpTiffQuality.alignChildren = ["left","center"]; 
+    grpTiffQuality.spacing = 10; 
+    grpTiffQuality.margins = 0; 
 
-    var lblTifQuality = grpTifQuality.add("statictext", undefined, undefined, {name: "lblTifQuality"}); 
-    lblTifQuality.text = "Quality"; 
+    var lblTiffQuality = grpTiffQuality.add("statictext", undefined, undefined, {name: "lblTiffQuality"}); 
+    lblTiffQuality.text = "Quality"; 
 
-    var sldrTifQuality = grpTifQuality.add("slider", undefined, undefined, undefined, undefined, {name: "sldrTifQuality"}); 
-    sldrTifQuality.minvalue = 0; 
-    sldrTifQuality.maxvalue = 100; 
-    sldrTifQuality.value = 50; 
-    sldrTifQuality.preferredSize.width = 100; 
+    var sldrTiffQuality = grpTiffQuality.add("slider", undefined, undefined, undefined, undefined, {name: "sldrTiffQuality"}); 
+    sldrTiffQuality.minvalue = 0; 
+    sldrTiffQuality.maxvalue = 100; 
+    sldrTiffQuality.value = 50; 
+    sldrTiffQuality.preferredSize.width = 100; 
 
-    var lblTifQualityValue = grpTifQuality.add("statictext", undefined, undefined, {name: "lblTifQualityValue"}); 
-    lblTifQualityValue.text = "100"; 
+    var lblTiffQualityValue = grpTiffQuality.add("statictext", undefined, undefined, {name: "lblTiffQualityValue"}); 
+    lblTiffQualityValue.text = "100"; 
 
-    // TABTIF
+    // TABTIFF
     // ======
-    var cbTifWithAlpha = tabTif.add("checkbox", undefined, undefined, {name: "cbTifWithAlpha"}); 
-    cbTifWithAlpha.text = "With Alpha Channel"; 
+    var cbTiffWithAlpha = tabTiff.add("checkbox", undefined, undefined, {name: "cbTiffWithAlpha"}); 
+    cbTiffWithAlpha.text = "With Alpha Channel"; 
 
-    var cbTifIcc = tabTif.add("checkbox", undefined, undefined, {name: "cbTifIcc"}); 
-    cbTifIcc.text = "ICC Profile"; 
+    var cbTiffIcc = tabTiff.add("checkbox", undefined, undefined, {name: "cbTiffIcc"}); 
+    cbTiffIcc.text = "ICC Profile"; 
 
-    var cbTifTransparency = tabTif.add("checkbox", undefined, undefined, {name: "cbTifTransparency"}); 
-    cbTifTransparency.text = "Transparency"; 
+    var cbTiffTransparency = tabTiff.add("checkbox", undefined, undefined, {name: "cbTiffTransparency"}); 
+    cbTiffTransparency.text = "Transparency"; 
 
     // TABPDF
     // ======
